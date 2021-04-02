@@ -13,6 +13,27 @@ namespace ArenaFighter
         public static int dice = 0;
         static void Main(string[] args)
         {
+            //=====================================
+            Character Plyer = new Character();
+            Plyer.CreateCharacter("Ali");
+            Plyer.Rull = "Player";
+            Plyer.Line = 2;
+            Plyer.MoveIcon = '#';
+            BattleA.characterList.Add(Plyer);
+            Plyer = new Character();
+            for (int q = 0; q < 4; q++)
+            {
+                //Character Plyer = new Character();
+                Plyer.CreateCharacter("Rabite"+q);
+                Plyer.Rull = "Opponent";
+                BattleA.characterList.Add(Plyer);
+                Plyer.Line = 3;
+                Plyer.MoveIcon = '?';
+                Plyer = new Character();
+
+            }
+            BattleA.StartFight();
+            //============================================
             #region SetConsoleWinow
             Console.WindowTop = 0;
             Console.WindowLeft = 0;
@@ -36,7 +57,7 @@ namespace ArenaFighter
              opponent.MoveIcon = "H";
             opponent.setStrengthHealth();
             opponent.Line = 3;
-
+            Personal personal = new Personal();
             BattleLog battle = new BattleLog();
 
 
@@ -85,9 +106,12 @@ namespace ArenaFighter
             Console.ReadKey();
 
             //for (int j = 0; j < 10; j++)
+            int nyckel = 1;
             bool endFlag = false;
             while(endFlag==false)
             {
+                player.release();
+                opponent.release();
                 player.RollDice();
                 opponent.RollDice();
                 
@@ -125,13 +149,20 @@ namespace ArenaFighter
                     }
 
                 }
+                
+    
 
-                battle.playerDice = player.Dice; battle.playerStrength = player.Strength; battle.playerHealth = player.Health;
-                battle.opponentDice = opponent.Dice; battle.opponentStrength = opponent.Strength; battle.opponentHealth = opponent.Health;
-                battle.PersonLog.Add(1,battle);
+                personal.playerDice = player.Dice; personal.playerStrength = player.Strength; personal.playerHealth = player.Health;
+                personal.opponentDice = opponent.Dice; personal.opponentStrength = opponent.Strength; personal.opponentHealth = opponent.Health;
+                battle.PersonLog. Add(nyckel, personal);
+                nyckel++;
+                
 
             }
- 
+            //foreach (var entry in battle)
+            //{
+            //    // do something with entry.Value or entry.Key
+            //}
             Console.ReadKey();
         }
 
@@ -244,12 +275,24 @@ namespace ArenaFighter
         {
 
         }
+        public void release()
+        {
+            Dice = 0;
+            Strength = 0;
+            Health = 0;
+        }
          #endregion
+    }
+    public class Personal 
+    {
+
+        public int playerDice, playerStrength, playerHealth, opponentDice, opponentStrength, opponentHealth;
     }
     public class BattleLog
     {
-        public int playerDice, playerStrength, playerHealth, opponentDice, opponentStrength, opponentHealth;
-        //public List<BattleLog> PersonLog = new List<BattleLog>();
-        public Dictionary<int, BattleLog> PersonLog = new Dictionary<int, BattleLog>();
+        
+
+        //public int playerDice, playerStrength, playerHealth, opponentDice, opponentStrength, opponentHealth;
+        public Dictionary<int, Personal> PersonLog = new Dictionary<int, Personal>();
     }
 }
